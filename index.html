@@ -274,7 +274,7 @@
   .hand-card.detected .hand-icon { filter: grayscale(0.5) opacity(0.7); }
 
   /* Access granted overlay */
-  #access-overlay {
+  #access-overlay, #grace-overlay {
     position: fixed;
     inset: 0;
     background: var(--bg);
@@ -284,14 +284,38 @@
     align-items: center;
     justify-content: center;
     gap: 20px;
+    padding: 24px;
+    text-align: center;
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.4s;
   }
 
-  #access-overlay.show {
+  #access-overlay.show, #grace-overlay.show {
     opacity: 1;
     pointer-events: all;
+  }
+
+  #grace-overlay .big-check { font-size: 80px; animation: pop 0.4s cubic-bezier(0.17, 0.89, 0.32, 1.5); }
+  #grace-overlay h2 {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 48px;
+    letter-spacing: 0.3em;
+    color: var(--accent2);
+    text-shadow: 0 0 30px rgba(0,207,255,0.5);
+  }
+  #grace-overlay p {
+    font-size: 12px;
+    color: var(--dim);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+  #grace-overlay .grace-hint {
+    max-width: 320px;
+    line-height: 1.8;
+    letter-spacing: 0.1em;
+    text-transform: none;
+    color: var(--warn);
   }
 
   #access-overlay .big-check {
@@ -412,6 +436,13 @@
   <p>Abriendo WhatsApp...</p>
 </div>
 
+<div id="grace-overlay">
+  <div class="big-check">✅</div>
+  <h2>YA VERIFICADO</h2>
+  <p>Vuelve a WhatsApp manualmente</p>
+  <p class="grace-hint">Desliza hacia arriba o usa el cambiador de apps.<br>No toques abrir WhatsApp otra vez o volverás aquí.</p>
+</div>
+
 <div id="app">
   <div class="title-block">
     <div class="label">Sistema de verificación</div>
@@ -474,9 +505,15 @@ const progressFill = document.getElementById('progressFill');
 const leftCard = document.getElementById('leftCard');
 const rightCard = document.getElementById('rightCard');
 const accessOverlay = document.getElementById('access-overlay');
+const graceOverlay = document.getElementById('grace-overlay');
 const loadingEl = document.getElementById('loading');
 const loadStatus = document.getElementById('load-status');
 const errorMsg = document.getElementById('error-msg');
+
+// How long (ms) after a successful gesture we treat a re-open as the WhatsApp
+// loop-back and skip the gesture + redirect, breaking the infinite loop.
+const GRACE_MS = 5000;
+const GRANT_KEY = 'cornamenta_last_grant';
 
 let handLandmarker = null;
 let validStart = null;
@@ -729,6 +766,10 @@ function grantAccess() {
   progressFill.style.width = '100%';
   accessOverlay.classList.add('show');
 
+  // Mark the moment of access so the loop-back open (WhatsApp re-firing the
+  // automation) is detected and does NOT redirect again.
+  try { localStorage.setItem(GRANT_KEY, String(Date.now())); } catch (e) {}
+
   setTimeout(() => {
     window.location.href = 'whatsapp://';
     // Fallback for testing on desktop
@@ -745,7 +786,32 @@ function showError(msg) {
   setStatus('error', 'Error — ver mensaje abajo');
 }
 
-initModel();
+function showGraceScreen() {
+  granted = true; // prevents any detection/redirect
+  loadingEl.style.display = 'none';
+  graceOverlay.classList.add('show');
+  // Stop the camera if it somehow started.
+  if (video.srcObject) {
+    video.srcObject.getTracks().forEach(t => t.stop());
+  }
+}
+
+function recentlyGranted() {
+  try {
+    const last = parseInt(localStorage.getItem(GRANT_KEY) || '0', 10);
+    return last && (Date.now() - last) < GRACE_MS;
+  } catch (e) {
+    return false;
+  }
+}
+
+if (recentlyGranted()) {
+  // This open is the WhatsApp loop-back: don't ask for the gesture, don't
+  // redirect. Just show the "verified" screen so the loop stops here.
+  showGraceScreen();
+} else {
+  initModel();
+}
 </script>
 </body>
 </html>
