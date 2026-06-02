@@ -3,9 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<meta http-equiv="Pragma" content="no-cache">
-<meta http-equiv="Expires" content="0">
 <title>Acceso WhatsApp</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Bebas+Neue&display=swap');
@@ -277,7 +274,7 @@
   .hand-card.detected .hand-icon { filter: grayscale(0.5) opacity(0.7); }
 
   /* Access granted overlay */
-  #access-overlay {
+  #access-overlay, #grace-overlay {
     position: fixed;
     inset: 0;
     background: var(--bg);
@@ -294,9 +291,31 @@
     transition: opacity 0.4s;
   }
 
-  #access-overlay.show {
+  #access-overlay.show, #grace-overlay.show {
     opacity: 1;
     pointer-events: all;
+  }
+
+  #grace-overlay .big-check { font-size: 80px; animation: pop 0.4s cubic-bezier(0.17, 0.89, 0.32, 1.5); }
+  #grace-overlay h2 {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 48px;
+    letter-spacing: 0.3em;
+    color: var(--accent2);
+    text-shadow: 0 0 30px rgba(0,207,255,0.5);
+  }
+  #grace-overlay p {
+    font-size: 12px;
+    color: var(--dim);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+  #grace-overlay .grace-hint {
+    max-width: 320px;
+    line-height: 1.8;
+    letter-spacing: 0.1em;
+    text-transform: none;
+    color: var(--warn);
   }
 
   #access-overlay .big-check {
@@ -309,17 +328,35 @@
     to { transform: scale(1); }
   }
 
-  /* Build/version stamp — confirms the latest deploy is loaded (not a Safari cache) */
-  #build-tag {
+  #grace-overlay {
     position: fixed;
-    bottom: 4px;
-    right: 6px;
-    z-index: 300;
-    font-size: 9px;
-    letter-spacing: 0.1em;
+    inset: 0;
+    background: var(--bg);
+    z-index: 250;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+  }
+
+  #grace-overlay .big-check {
+    font-size: 80px;
+  }
+
+  #grace-overlay h2 {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 40px;
+    letter-spacing: 0.3em;
+    color: var(--accent);
+    text-shadow: 0 0 30px rgba(0,255,136,0.6);
+  }
+
+  #grace-overlay p {
+    font-size: 12px;
     color: var(--dim);
-    opacity: 0.6;
-    pointer-events: none;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
   }
 
   #access-overlay h2 {
@@ -424,11 +461,23 @@
   <p id="load-status">Inicializando MediaPipe...</p>
 </div>
 
+<div id="grace-overlay">
+  <div class="big-check">✅</div>
+  <h2>YA VERIFICADO</h2>
+  <p>Vuelve a WhatsApp</p>
+</div>
+
 <div id="access-overlay">
   <div class="big-check">✅</div>
   <h2>ACCESO CONCEDIDO</h2>
-  <p>Abriendo WhatsApp...</p>
-  <a id="manual-link" href="whatsapp://" style="display:none;margin-top:8px;color:var(--accent2);font-size:13px;letter-spacing:0.1em;">Abrir WhatsApp manualmente ▶</a>
+  <p>◀ Desliza o toca WhatsApp arriba</p>
+</div>
+
+<div id="grace-overlay">
+  <div class="big-check">✅</div>
+  <h2>YA VERIFICADO</h2>
+  <p>Vuelve a WhatsApp manualmente</p>
+  <p class="grace-hint">Desliza hacia arriba o usa el cambiador de apps.<br>No toques abrir WhatsApp otra vez o volverás aquí.</p>
 </div>
 
 <div id="app">
@@ -480,8 +529,6 @@
   <div id="error-msg"></div>
 </div>
 
-<div id="build-tag">v4 · shortcut-flag</div>
-
 <script type="module">
 import { FilesetResolver, HandLandmarker } from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.8/vision_bundle.mjs";
 
@@ -495,16 +542,15 @@ const progressFill = document.getElementById('progressFill');
 const leftCard = document.getElementById('leftCard');
 const rightCard = document.getElementById('rightCard');
 const accessOverlay = document.getElementById('access-overlay');
-const manualLink = document.getElementById('manual-link');
+const graceOverlay = document.getElementById('grace-overlay');
 const loadingEl = document.getElementById('loading');
 const loadStatus = document.getElementById('load-status');
 const errorMsg = document.getElementById('error-msg');
 
-// On a successful gesture we hand off to the "PassWhatsApp" Shortcut, which
-// records a one-shot flag and opens WhatsApp. The "When WhatsApp is opened"
-// automation reads that flag and skips re-opening this gate, breaking the loop.
-// All anti-loop state lives in the Shortcut (a flag file), NOT in the browser.
-const PASS_SHORTCUT_URL = 'shortcuts://run-shortcut?name=PassWhatsApp';
+// How long (ms) after a successful gesture we treat a re-open as the WhatsApp
+// loop-back and skip the gesture + redirect, breaking the infinite loop.
+const GRACE_MS = 30000;
+const GRANT_KEY = 'cornamenta_last_grant';
 
 let handLandmarker = null;
 let validStart = null;
@@ -757,17 +803,12 @@ function grantAccess() {
   progressFill.style.width = '100%';
   accessOverlay.classList.add('show');
 
-  // Hand off to the PassWhatsApp Shortcut: it sets the one-shot flag and opens
-  // WhatsApp. The automation then sees the flag and skips this gate -> no loop.
-  setTimeout(() => {
-    window.location.href = PASS_SHORTCUT_URL;
-  }, 1200);
+  // Mark the moment of access so the loop-back open (WhatsApp re-firing the
+  // automation) is detected and does NOT redirect again.
+  try { localStorage.setItem(GRANT_KEY, String(Date.now())); } catch (e) {}
 
-  // Fallback: if nothing happened (e.g. Shortcut not installed, or desktop),
-  // reveal a manual link so the page is never a dead end.
-  setTimeout(() => {
-    manualLink.style.display = 'inline-block';
-  }, 3000);
+  // No redirect — user taps "◀ WhatsApp" back button that iOS shows automatically.
+  // Redirecting to whatsapp:// re-triggers the Shortcut automation and causes a loop.
 }
 
 function showError(msg) {
@@ -777,7 +818,29 @@ function showError(msg) {
   setStatus('error', 'Error — ver mensaje abajo');
 }
 
-initModel();
+function showGraceScreen() {
+  granted = true;
+  loadingEl.style.display = 'none';
+  graceOverlay.classList.add('show');
+  if (video.srcObject) {
+    video.srcObject.getTracks().forEach(t => t.stop());
+  }
+}
+
+function recentlyGranted() {
+  try {
+    const last = parseInt(localStorage.getItem(GRANT_KEY) || '0', 10);
+    return last && (Date.now() - last) < GRACE_MS;
+  } catch (e) {
+    return false;
+  }
+}
+
+if (recentlyGranted()) {
+  showGraceScreen();
+} else {
+  initModel();
+}
 </script>
 </body>
 </html>
