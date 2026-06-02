@@ -468,9 +468,9 @@
 </div>
 
 <div id="access-overlay">
-  <div class="big-check">🤘</div>
+  <div class="big-check">✅</div>
   <h2>ACCESO CONCEDIDO</h2>
-  <p>Abriendo WhatsApp...</p>
+  <p>◀ Desliza o toca WhatsApp arriba</p>
 </div>
 
 <div id="grace-overlay">
@@ -807,9 +807,8 @@ function grantAccess() {
   // automation) is detected and does NOT redirect again.
   try { localStorage.setItem(GRANT_KEY, String(Date.now())); } catch (e) {}
 
-  setTimeout(() => {
-    location.href = 'whatsapp://';
-  }, 1800);
+  // No redirect — user taps "◀ WhatsApp" back button that iOS shows automatically.
+  // Redirecting to whatsapp:// re-triggers the Shortcut automation and causes a loop.
 }
 
 function showError(msg) {
