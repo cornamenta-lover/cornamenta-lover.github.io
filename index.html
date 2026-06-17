@@ -274,7 +274,7 @@
   .hand-card.detected .hand-icon { filter: grayscale(0.5) opacity(0.7); }
 
   /* Access granted overlay */
-  #access-overlay, #grace-overlay {
+  #access-overlay {
     position: fixed;
     inset: 0;
     background: var(--bg);
@@ -284,38 +284,14 @@
     align-items: center;
     justify-content: center;
     gap: 20px;
-    padding: 24px;
-    text-align: center;
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.4s;
   }
 
-  #access-overlay.show, #grace-overlay.show {
+  #access-overlay.show {
     opacity: 1;
     pointer-events: all;
-  }
-
-  #grace-overlay .big-check { font-size: 80px; animation: pop 0.4s cubic-bezier(0.17, 0.89, 0.32, 1.5); }
-  #grace-overlay h2 {
-    font-family: 'Bebas Neue', cursive;
-    font-size: 48px;
-    letter-spacing: 0.3em;
-    color: var(--accent2);
-    text-shadow: 0 0 30px rgba(0,207,255,0.5);
-  }
-  #grace-overlay p {
-    font-size: 12px;
-    color: var(--dim);
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-  }
-  #grace-overlay .grace-hint {
-    max-width: 320px;
-    line-height: 1.8;
-    letter-spacing: 0.1em;
-    text-transform: none;
-    color: var(--warn);
   }
 
   #access-overlay .big-check {
@@ -326,37 +302,6 @@
   @keyframes pop {
     from { transform: scale(0); }
     to { transform: scale(1); }
-  }
-
-  #grace-overlay {
-    position: fixed;
-    inset: 0;
-    background: var(--bg);
-    z-index: 250;
-    display: none;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 20px;
-  }
-
-  #grace-overlay .big-check {
-    font-size: 80px;
-  }
-
-  #grace-overlay h2 {
-    font-family: 'Bebas Neue', cursive;
-    font-size: 40px;
-    letter-spacing: 0.3em;
-    color: var(--accent);
-    text-shadow: 0 0 30px rgba(0,255,136,0.6);
-  }
-
-  #grace-overlay p {
-    font-size: 12px;
-    color: var(--dim);
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
   }
 
   #access-overlay h2 {
@@ -461,23 +406,10 @@
   <p id="load-status">Inicializando MediaPipe...</p>
 </div>
 
-<div id="grace-overlay">
-  <div class="big-check">✅</div>
-  <h2>YA VERIFICADO</h2>
-  <p>Vuelve a WhatsApp</p>
-</div>
-
 <div id="access-overlay">
-  <div class="big-check">✅</div>
+  <div class="big-check">✋</div>
   <h2>ACCESO CONCEDIDO</h2>
-  <p>◀ Desliza o toca WhatsApp arriba</p>
-</div>
-
-<div id="grace-overlay">
-  <div class="big-check">✅</div>
-  <h2>YA VERIFICADO</h2>
-  <p>Vuelve a WhatsApp manualmente</p>
-  <p class="grace-hint">Desliza hacia arriba o usa el cambiador de apps.<br>No toques abrir WhatsApp otra vez o volverás aquí.</p>
+  <p>Abriendo WhatsApp...</p>
 </div>
 
 <div id="app">
@@ -501,11 +433,11 @@
   <div class="hand-indicators">
     <div class="hand-card" id="leftCard">
       <div class="hand-label">Mano izquierda</div>
-      <div class="hand-icon">🤘</div>
+      <div class="hand-icon">✋</div>
     </div>
     <div class="hand-card" id="rightCard">
       <div class="hand-label">Mano derecha</div>
-      <div class="hand-icon">🤘</div>
+      <div class="hand-icon">✋</div>
     </div>
   </div>
 
@@ -542,15 +474,9 @@ const progressFill = document.getElementById('progressFill');
 const leftCard = document.getElementById('leftCard');
 const rightCard = document.getElementById('rightCard');
 const accessOverlay = document.getElementById('access-overlay');
-const graceOverlay = document.getElementById('grace-overlay');
 const loadingEl = document.getElementById('loading');
 const loadStatus = document.getElementById('load-status');
 const errorMsg = document.getElementById('error-msg');
-
-// How long (ms) after a successful gesture we treat a re-open as the WhatsApp
-// loop-back and skip the gesture + redirect, breaking the infinite loop.
-const GRACE_MS = 30000;
-const GRANT_KEY = 'cornamenta_last_grant';
 
 let handLandmarker = null;
 let validStart = null;
@@ -781,7 +707,7 @@ function detect() {
         }
         setStatus('scanning', issues.length ? issues[0] : 'Ajusta el gesto...');
       } else {
-        setStatus('idle', 'Levanta ambas manos sobre tu cabeza 🤘');
+        setStatus('idle', 'Levanta ambas manos sobre tu cabeza ✋');
         progressFill.style.width = '0%';
       }
     }
@@ -799,16 +725,15 @@ function detect() {
 function grantAccess() {
   granted = true;
   cancelAnimationFrame(animFrame);
+  localStorage.setItem('wa_gate_ok', Date.now().toString());
   setStatus('valid', '¡Acceso concedido!');
   progressFill.style.width = '100%';
   accessOverlay.classList.add('show');
 
-  // Mark the moment of access so the loop-back open (WhatsApp re-firing the
-  // automation) is detected and does NOT redirect again.
-  try { localStorage.setItem(GRANT_KEY, String(Date.now())); } catch (e) {}
-
-  // No redirect — user taps "◀ WhatsApp" back button that iOS shows automatically.
-  // Redirecting to whatsapp:// re-triggers the Shortcut automation and causes a loop.
+  setTimeout(() => {
+    location.href = 'shortcuts://run-shortcut?name=Gate%20OK'; // lanza el shortcut que guarda timestamp y abre WhatsApp
+    setTimeout(() => window.close(), 500); // cierra la pestaña (funciona si fue abierta por JS)
+  }, 1800);
 }
 
 function showError(msg) {
@@ -818,26 +743,29 @@ function showError(msg) {
   setStatus('error', 'Error — ver mensaje abajo');
 }
 
-function showGraceScreen() {
-  granted = true;
-  loadingEl.style.display = 'none';
-  graceOverlay.classList.add('show');
-  if (video.srcObject) {
-    video.srcObject.getTracks().forEach(t => t.stop());
-  }
-}
+const _bypassTs = localStorage.getItem('wa_gate_ok');
 
-function recentlyGranted() {
-  try {
-    const last = parseInt(localStorage.getItem(GRANT_KEY) || '0', 10);
-    return last && (Date.now() - last) < GRACE_MS;
-  } catch (e) {
-    return false;
+if (location.search.includes('launch=1')) {
+  // Pestaña abierta por el Shortcut — abre el gate real vía JS para que pueda cerrarse sola
+  const newWin = window.open(location.pathname);
+  if (newWin) {
+    window.close(); // intenta cerrar la pestaña del shortcut (puede fallar, sin problema)
+  } else {
+    // Bloqueado por el navegador — ejecutar el gate directamente como fallback
+    history.replaceState(null, '', location.pathname);
+    initModel();
   }
-}
 
-if (recentlyGranted()) {
-  showGraceScreen();
+} else if (_bypassTs && Date.now() - parseInt(_bypassTs) < 15000) {
+  // Pestaña re-lanzada por el shortcut — no volver a correr el gate, reenviar a WhatsApp
+  // No borramos el timestamp para que disparos sucesivos en los próximos 60s también pasen
+  document.getElementById('loading').style.display = 'none';
+  document.getElementById('access-overlay').classList.add('show');
+  setTimeout(() => {
+    location.href = 'whatsapp://'; // volver a WhatsApp
+    setTimeout(() => window.close(), 500); // cerrar si la pestaña fue abierta por JS
+  }, 800);
+
 } else {
   initModel();
 }
