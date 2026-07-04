@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cornamenta — Antes de usar WhatsApp, ponte los cuernos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo+Black&family=Bungee&family=DM+Serif+Display:ital@0;1&family=Space+Mono:wght@400;700&family=VT323&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: #16140f; -webkit-font-smoothing: antialiased; }
+    @keyframes wg-marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+    @keyframes wg-spin    { from { transform: rotate(0deg); }  to { transform: rotate(360deg); } }
+    @keyframes wg-spinr   { from { transform: rotate(0deg); }  to { transform: rotate(-360deg); } }
+    @keyframes wg-blink   { 0%,49% { opacity:1; } 50%,100% { opacity:0; } }
+    @keyframes wg-float   { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-12px); } }
+    ::selection { background: #ff2d95; color: #fff; }
+  </style>
+</head>
+<body>
+
+<!-- noise overlay -->
+<div style="position:fixed;inset:0;pointer-events:none;z-index:60;opacity:0.08;mix-blend-mode:overlay;background-image:url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22140%22 height=%22140%22%3E%3Cfilter id=%22n%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.85%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23n)%22/%3E%3C/svg%3E');"></div>
+
+<!-- NAV -->
+<nav style="position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 24px;background:#16140f;border-bottom:3px solid #f4ede0;">
+  <a href="#top" style="display:flex;align-items:center;gap:10px;text-decoration:none;">
+    <span style="display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;background:#25d366;border-radius:7px;box-shadow:3px 3px 0 #16140f,inset 0 0 0 2px #062a14;transform:rotate(-6deg);">
+      <img src="assets/cuernos-hand.png" alt="" style="width:18px;height:auto;display:block;">
+    </span>
+    <span style="font-family:'Anton',sans-serif;letter-spacing:1px;font-size:19px;color:#f4ede0;text-transform:uppercase;">Cornamenta</span>
+  </a>
+  <div style="display:flex;align-items:center;gap:22px;">
+    <a href="#story" style="color:#f4ede0;text-decoration:none;font-family:'Space Mono',monospace;font-size:12px;letter-spacing:1px;text-transform:uppercase;">El truco</a>
+    <a href="#como"  style="color:#f4ede0;text-decoration:none;font-family:'Space Mono',monospace;font-size:12px;letter-spacing:1px;text-transform:uppercase;">Cómo va</a>
+    <a href="#demo"  style="display:inline-block;background:#ffd60a;color:#16140f;text-decoration:none;font-family:'Archivo Black',sans-serif;font-size:12px;letter-spacing:0.5px;text-transform:uppercase;padding:9px 16px;box-shadow:3px 3px 0 #16140f;transform:rotate(-1deg);">Pruébalo 🤘</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header id="top" style="position:relative;padding:70px 24px 40px;overflow:hidden;background:#16140f;">
+  <svg viewBox="0 0 100 100" style="position:absolute;top:-40px;right:-30px;width:280px;height:280px;animation:wg-spin 26s linear infinite;opacity:0.95;z-index:0;"><polygon points="50,2 57.27,32.45 83.9,16.06 67.55,42.73 98,50 67.55,57.27 83.9,83.94 57.27,67.55 50,98 42.73,67.55 16.06,83.94 32.45,57.27 2,50 32.45,42.73 16.06,16.06 42.73,32.45" fill="#ff2d95"/></svg>
+  <svg viewBox="0 0 100 100" style="position:absolute;bottom:10px;left:-50px;width:200px;height:200px;animation:wg-spinr 30s linear infinite;opacity:0.9;z-index:0;"><polygon points="50,2 57.27,32.45 83.9,16.06 67.55,42.73 98,50 67.55,57.27 83.9,83.94 57.27,67.55 50,98 42.73,67.55 16.06,83.94 32.45,57.27 2,50 32.45,42.73 16.06,16.06 42.73,32.45" fill="#ffd60a"/></svg>
+  <svg viewBox="0 0 100 100" style="position:absolute;top:120px;left:46%;width:90px;height:90px;z-index:0;"><path d="M50 0 C55 35 65 45 100 50 C65 55 55 65 50 100 C45 65 35 55 0 50 C35 45 45 35 50 0Z" fill="#2438d8"/></svg>
+
+  <img id="sticker1" src="assets/cuernos-hands.png" alt="" draggable="false"
+    style="position:absolute;left:30px;top:44px;z-index:30;width:150px;height:auto;cursor:grab;user-select:none;-webkit-user-drag:none;touch-action:none;transform:rotate(-8deg);filter:drop-shadow(5px 6px 0 rgba(0,0,0,0.45));">
+
+  <div style="position:relative;z-index:2;max-width:1120px;margin:0 auto;display:flex;flex-wrap:wrap;gap:48px;align-items:center;">
+
+    <!-- TÍTULO -->
+    <div style="flex:1 1 440px;min-width:0;">
+      <h1 style="margin:24px 0 0;line-height:0.92;font-weight:400;">
+        <span style="display:inline-block;background:#f4ede0;color:#16140f;font-family:'Anton',sans-serif;font-size:clamp(38px,6.5vw,86px);padding:2px 14px;transform:rotate(-2deg);margin:6px 6px 6px 0;box-shadow:5px 5px 0 #2438d8;">ANTES</span>
+        <span style="display:inline-block;background:#2438d8;color:#fff;font-family:'Archivo Black',sans-serif;font-size:clamp(26px,4.5vw,52px);padding:6px 14px;transform:rotate(1deg);margin:6px 6px 6px 0;">DE USAR</span>
+        <span style="display:inline-block;background:#25d366;color:#062a14;font-family:'Anton',sans-serif;font-size:clamp(38px,6.5vw,86px);padding:2px 14px;transform:rotate(-1deg);margin:6px 0;box-shadow:5px 5px 0 #16140f;">WHATSAPP,</span>
+        <br>
+        <span style="display:inline-block;font-family:'DM Serif Display',serif;font-style:italic;color:#ffd60a;font-size:clamp(40px,6.5vw,82px);margin:12px 0 0;">ponte los</span>
+        <br>
+        <span style="display:inline-block;background:#ff2d95;color:#fff;font-family:'Anton',sans-serif;font-size:clamp(44px,8vw,104px);padding:2px 18px;transform:rotate(1.5deg);margin:8px 0 6px;box-shadow:6px 6px 0 #ffd60a;">CUERNOS.</span>
+      </h1>
+    </div>
+
+    <!-- WIN95 DEMO -->
+    <div id="demo" style="flex:1 1 380px;max-width:430px;min-width:0;">
+      <div style="background:#c0c0c0;padding:3px;box-shadow:inset -1px -1px 0 #000,inset 1px 1px 0 #fff,inset -2px -2px 0 #808080,inset 2px 2px 0 #dfdfdf,10px 12px 0 rgba(0,0,0,0.5);">
+        <!-- title bar -->
+        <div style="display:flex;align-items:center;justify-content:space-between;background:linear-gradient(90deg,#000080,#1084d0);padding:4px 5px;">
+          <span style="display:inline-flex;align-items:center;gap:6px;font-family:'VT323',monospace;color:#fff;font-size:18px;letter-spacing:0.5px;">
+            <img src="assets/cuernos-hand.png" alt="" style="height:16px;width:auto;display:block;">
+            gate.exe — espejo
+          </span>
+          <div style="display:flex;gap:3px;">
+            <span style="width:18px;height:16px;background:#c0c0c0;box-shadow:inset -1px -1px 0 #000,inset 1px 1px 0 #fff;font-family:'VT323',monospace;font-size:14px;text-align:center;line-height:14px;color:#16140f;">_</span>
+            <span style="width:18px;height:16px;background:#c0c0c0;box-shadow:inset -1px -1px 0 #000,inset 1px 1px 0 #fff;font-family:'VT323',monospace;font-size:13px;text-align:center;line-height:14px;color:#16140f;">×</span>
+          </div>
+        </div>
+
+        <!-- video area -->
+        <div style="position:relative;margin:3px;background:#000;box-shadow:inset -1px -1px 0 #dfdfdf,inset 1px 1px 0 #808080;aspect-ratio:4/3;overflow:hidden;">
+          <video id="cam-video" autoplay playsinline muted style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scaleX(-1);display:block;background:#000;"></video>
+          <canvas id="cam-canvas" style="position:absolute;inset:0;width:100%;height:100%;transform:scaleX(-1);pointer-events:none;"></canvas>
+
+          <!-- idle -->
+          <div id="overlay-idle" style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;background:#0a0a0a;text-align:center;padding:20px;">
+            <img src="assets/cuernos-hands.png" alt="" style="width:120px;height:auto;animation:wg-float 3s ease-in-out infinite;">
+            <div style="font-family:'VT323',monospace;color:#25d366;font-size:20px;line-height:1.1;">CÁMARA APAGADA</div>
+            <button onclick="startCam()" style="cursor:pointer;background:#ffd60a;color:#16140f;border:2px solid #16140f;font-family:'Archivo Black',sans-serif;font-size:14px;text-transform:uppercase;padding:12px 20px;box-shadow:4px 4px 0 #16140f;">Encender cámara</button>
+          </div>
+
+          <!-- starting -->
+          <div id="overlay-starting" style="position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:#0a0a0a;">
+            <div style="font-family:'VT323',monospace;color:#25d366;font-size:22px;animation:wg-blink 1s step-end infinite;">CARGANDO IA…</div>
+            <div style="font-family:'Space Mono',monospace;color:#777;font-size:11px;">pidiendo permiso de cámara</div>
+          </div>
+
+          <!-- blocked -->
+          <div id="overlay-blocked" style="position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:#1a0606;text-align:center;padding:22px;">
+            <div style="font-size:34px;">🚫</div>
+            <div id="cam-blocked-msg" style="font-family:'VT323',monospace;color:#ff6b6b;font-size:19px;line-height:1.2;"></div>
+            <button onclick="simulate()" style="cursor:pointer;background:#25d366;color:#062a14;border:2px solid #062a14;font-family:'Archivo Black',sans-serif;font-size:13px;text-transform:uppercase;padding:11px 18px;box-shadow:4px 4px 0 #062a14;">Ver cómo termina ▸</button>
+          </div>
+
+          <!-- granted -->
+          <div id="overlay-granted" style="position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:#062a14;text-align:center;padding:22px;">
+            <img src="assets/cuernos-hands.png" alt="" style="width:96px;height:auto;">
+            <div style="font-family:'Anton',sans-serif;color:#25d366;font-size:30px;letter-spacing:1px;line-height:0.95;text-transform:uppercase;">Acceso<br>concedido</div>
+            <a href="whatsapp://send" style="text-decoration:none;background:#25d366;color:#062a14;border:2px solid #062a14;font-family:'Archivo Black',sans-serif;font-size:14px;text-transform:uppercase;padding:11px 20px;box-shadow:4px 4px 0 #062a14;">Abrir WhatsApp</a>
+            <button onclick="resetCam()" style="cursor:pointer;background:transparent;color:#9fdcb4;border:none;font-family:'Space Mono',monospace;font-size:12px;text-decoration:underline;">repetir el ritual</button>
+          </div>
+        </div>
+
+        <!-- status bar -->
+        <div style="margin:3px;padding:8px 8px 10px;">
+          <div id="cam-status" style="font-family:'VT323',monospace;font-size:18px;color:#16140f;letter-spacing:0.5px;min-height:22px;">PULSA «ENCENDER CÁMARA» PARA EMPEZAR</div>
+          <div style="margin-top:6px;height:20px;background:#fff;box-shadow:inset -1px -1px 0 #dfdfdf,inset 1px 1px 0 #808080;padding:2px;">
+            <div id="cam-bar" style="height:100%;width:0%;background:repeating-linear-gradient(90deg,#000080 0,#000080 9px,#c0c0c0 9px,#c0c0c0 11px);transition:width 0.08s linear;"></div>
+          </div>
+        </div>
+      </div>
+
+      <p style="margin:14px auto 0;max-width:360px;text-align:center;font-family:'Space Mono',monospace;font-size:12.5px;line-height:1.5;color:#9c9486;">
+        <strong style="color:#cfc6b6;">Las dos manos sobre la cabeza, 4 dedos arriba, pulgar escondido.</strong> Aguanta el contador mirándote a la cara. 🔒 El vídeo no sale de tu móvil.
+      </p>
+    </div>
+  </div>
+
+  <div style="position:relative;z-index:2;max-width:1120px;margin:10px auto 0;">
+    <p style="max-width:560px;margin:0;font-family:'Space Mono',monospace;font-size:16px;line-height:1.6;color:#cfc6b6;">¿De verdad quieres hablar a tu ex? Pasa dos segundos mirándote a la cámara, con las manos en la cabeza, preguntándote si de verdad merece la pena. <strong style="color:#f4ede0;">Sin el gesto, no entras.</strong></p>
+    <div style="display:flex;flex-wrap:wrap;gap:14px;margin-top:22px;">
+      <a href="#instalar" style="display:inline-flex;align-items:center;gap:8px;background:transparent;color:#f4ede0;text-decoration:none;font-family:'Space Mono',monospace;font-weight:700;font-size:14px;text-transform:uppercase;letter-spacing:1px;padding:15px 26px;border:2px solid #f4ede0;">Cómo se instala →</a>
+    </div>
+  </div>
+</header>
+
+<!-- MARQUEE -->
+<div style="background:#ff2d95;border-top:3px solid #16140f;border-bottom:3px solid #16140f;overflow:hidden;padding:11px 0;">
+  <div style="display:flex;width:max-content;animation:wg-marquee 22s linear infinite;white-space:nowrap;">
+    <span style="font-family:'Anton',sans-serif;font-size:22px;letter-spacing:1px;color:#16140f;text-transform:uppercase;">NO LE ESCRIBAS ✦ PIÉNSATELO DOS VECES ✦ 2 SEGUNDOS DE DIGNIDAD ✦ SIN GESTO NO HAY ENTRADA ✦ NO LE ESCRIBAS ✦ PIÉNSATELO DOS VECES ✦ 2 SEGUNDOS DE DIGNIDAD ✦ SIN GESTO NO HAY ENTRADA ✦&nbsp;</span>
+    <span style="font-family:'Anton',sans-serif;font-size:22px;letter-spacing:1px;color:#16140f;text-transform:uppercase;">NO LE ESCRIBAS ✦ PIÉNSATELO DOS VECES ✦ 2 SEGUNDOS DE DIGNIDAD ✦ SIN GESTO NO HAY ENTRADA ✦ NO LE ESCRIBAS ✦ PIÉNSATELO DOS VECES ✦ 2 SEGUNDOS DE DIGNIDAD ✦ SIN GESTO NO HAY ENTRADA ✦&nbsp;</span>
+  </div>
+</div>
+
+<!-- STORY -->
+<section id="story" style="position:relative;padding:80px 24px;background:#16140f;">
+  <div style="max-width:1120px;margin:0 auto;">
+    <div style="display:inline-block;background:#ffd60a;color:#16140f;font-family:'Space Mono',monospace;font-weight:700;font-size:12px;letter-spacing:2px;padding:5px 12px;text-transform:uppercase;margin-bottom:24px;">El truco real del producto</div>
+    <h2 style="margin:0;max-width:900px;font-family:'DM Serif Display',serif;font-weight:400;font-size:clamp(28px,4.6vw,52px);line-height:1.18;color:#f4ede0;">Reduce tus <em style="color:#ff2d95;">mensajes impulsivos</em> a la mitad con auto-intervenciones.</h2>
+    <p style="max-width:620px;margin:22px 0 0;font-family:'Space Mono',monospace;color:#cfc6b6;font-size:15px;line-height:1.7;">Abrir WhatsApp para escribirle a tu ex es un acto impulsivo, casi automático. Cornamenta interrumpe ese piloto automático con un micro-ritual que funciona en cuatro capas.</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px;margin-top:44px;">
+      <div style="background:#1f1c15;border:2px solid #ff2d95;padding:24px 22px 26px;box-shadow:6px 6px 0 #ff2d95;">
+        <div style="font-family:'Bungee',cursive;font-size:30px;color:#ff2d95;line-height:1;">01</div>
+        <h3 style="margin:14px 0 10px;font-family:'Anton',sans-serif;font-weight:400;font-size:19px;letter-spacing:0.5px;text-transform:uppercase;color:#f4ede0;line-height:1.1;">Corta el impulso</h3>
+        <p style="margin:0;font-family:'Space Mono',monospace;color:#cfc6b6;font-size:13.5px;line-height:1.6;">Escribirle a tu ex es un acto en piloto automático. Cornamenta interrumpe el ciclo tóxico de los golpes de dopamina de los mensajes impulsivos.</p>
+      </div>
+      <div style="background:#1f1c15;border:2px solid #ffd60a;padding:24px 22px 26px;box-shadow:6px 6px 0 #ffd60a;">
+        <div style="font-family:'Bungee',cursive;font-size:30px;color:#ffd60a;line-height:1;">02</div>
+        <h3 style="margin:14px 0 10px;font-family:'Anton',sans-serif;font-weight:400;font-size:19px;letter-spacing:0.5px;text-transform:uppercase;color:#f4ede0;line-height:1.1;">El doble sentido de los cuernos</h3>
+        <p style="margin:0;font-family:'Space Mono',monospace;color:#cfc6b6;font-size:13.5px;line-height:1.6;">No es un gesto cualquiera. La cornamenta son los cuernos: el símbolo de ser engañado. Literalmente te los pones a ti mismo antes de ir a escribirle.</p>
+      </div>
+      <div style="background:#1f1c15;border:2px solid #25d366;padding:24px 22px 26px;box-shadow:6px 6px 0 #25d366;">
+        <div style="font-family:'Bungee',cursive;font-size:30px;color:#25d366;line-height:1;">03</div>
+        <h3 style="margin:14px 0 10px;font-family:'Anton',sans-serif;font-weight:400;font-size:19px;letter-spacing:0.5px;text-transform:uppercase;color:#f4ede0;line-height:1.1;">El espejo como juez</h3>
+        <p style="margin:0;font-family:'Space Mono',monospace;color:#cfc6b6;font-size:13.5px;line-height:1.6;">Te ves haciéndolo. No hay forma de mirar para otro lado: dos segundos de contacto visual contigo mientras haces el gesto más ridículo posible.</p>
+      </div>
+      <div style="background:#1f1c15;border:2px solid #2438d8;padding:24px 22px 26px;box-shadow:6px 6px 0 #2438d8;">
+        <div style="font-family:'Bungee',cursive;font-size:30px;color:#2438d8;line-height:1;">04</div>
+        <h3 style="margin:14px 0 10px;font-family:'Anton',sans-serif;font-weight:400;font-size:19px;letter-spacing:0.5px;text-transform:uppercase;color:#f4ede0;line-height:1.1;">La humillación como fricción</h3>
+        <p style="margin:0;font-family:'Space Mono',monospace;color:#cfc6b6;font-size:13.5px;line-height:1.6;">No duele ni bloquea para siempre. Solo hace que el acto cueste un poco de dignidad. Y muchas veces eso basta para que te preguntes si merece la pena.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CÓMO FUNCIONA -->
+<section id="como" style="position:relative;padding:80px 24px;background:#f4ede0;color:#16140f;border-top:3px solid #16140f;border-bottom:3px solid #16140f;">
+  <div style="max-width:1120px;margin:0 auto;">
+    <h2 style="margin:0;font-family:'Anton',sans-serif;font-weight:400;font-size:clamp(34px,6vw,72px);line-height:0.95;text-transform:uppercase;">Cómo<br>funciona</h2>
+    <div style="display:flex;flex-wrap:wrap;gap:40px;align-items:stretch;margin-top:44px;">
+      <!-- phone mockup -->
+      <div style="flex:0 0 286px;max-width:286px;margin:0 auto;">
+        <div style="position:relative;width:100%;aspect-ratio:1290/2796;background:#16140f;border-radius:38px;box-shadow:0 0 0 3px #16140f,9px 10px 0 #ff2d95;padding:9px;">
+          <div style="position:relative;width:100%;height:100%;border-radius:24px;overflow:hidden;background:#0a0a0a;">
+            <img src="assets/cuernos-hands.png" alt="" style="position:absolute;top:46%;left:50%;transform:translate(-50%,-50%);width:64%;height:auto;opacity:0.15;">
+            <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;text-align:center;padding:20px;">
+              <div style="width:66px;height:66px;border-radius:50%;background:#ff2d95;color:#16140f;display:flex;align-items:center;justify-content:center;box-shadow:4px 4px 0 #16140f;"><span style="font-size:26px;margin-left:5px;">▶</span></div>
+              <div style="font-family:'VT323',monospace;color:#fff;font-size:19px;letter-spacing:1px;">VÍDEO DEMO</div>
+              <div style="font-family:'Space Mono',monospace;color:#8a8276;font-size:10px;letter-spacing:1px;border:1px dashed #5a5347;padding:5px 9px;">1290 × 2796 · PLACEHOLDER</div>
+            </div>
+            <div style="position:absolute;top:11px;left:11px;background:#ff2d95;color:#16140f;font-family:'Archivo Black',sans-serif;font-size:10px;padding:4px 8px;transform:rotate(-4deg);">▶ DEMO</div>
+          </div>
+        </div>
+      </div>
+      <!-- steps -->
+      <div style="flex:1 1 380px;min-width:0;display:flex;flex-direction:column;gap:16px;">
+        <div style="display:flex;flex-direction:column;border:2px solid #16140f;">
+          <div style="display:flex;gap:18px;align-items:flex-start;padding:18px 22px;border-bottom:2px solid #16140f;background:#16140f;color:#f4ede0;">
+            <div style="font-family:'VT323',monospace;font-size:38px;line-height:1;flex:0 0 auto;">01</div>
+            <div><h3 style="margin:0 0 5px;font-family:'Space Mono',monospace;font-weight:700;font-size:15px;text-transform:uppercase;line-height:1.15;">Abres WhatsApp</h3><p style="margin:0;font-family:'Space Mono',monospace;font-size:13px;line-height:1.5;opacity:0.85;">El atajo de iOS detecta la apertura y dispara Cornamenta.</p></div>
+          </div>
+          <div style="display:flex;gap:18px;align-items:flex-start;padding:18px 22px;border-bottom:2px solid #16140f;background:#ff2d95;color:#16140f;">
+            <div style="font-family:'VT323',monospace;font-size:38px;line-height:1;flex:0 0 auto;">02</div>
+            <div><h3 style="margin:0 0 5px;font-family:'Space Mono',monospace;font-weight:700;font-size:15px;text-transform:uppercase;line-height:1.15;">Safari abre Cornamenta</h3><p style="margin:0;font-family:'Space Mono',monospace;font-size:13px;line-height:1.5;opacity:0.85;">La cámara se enciende y el modelo carga en ~2 segundos, todo en local.</p></div>
+          </div>
+          <div style="display:flex;gap:18px;align-items:flex-start;padding:18px 22px;border-bottom:2px solid #16140f;background:#2438d8;color:#fff;">
+            <div style="font-family:'VT323',monospace;font-size:38px;line-height:1;flex:0 0 auto;">03</div>
+            <div><h3 style="margin:0 0 5px;font-family:'Space Mono',monospace;font-weight:700;font-size:15px;text-transform:uppercase;line-height:1.15;">Manos sobre la cabeza</h3><p style="margin:0;font-family:'Space Mono',monospace;font-size:13px;line-height:1.5;opacity:0.85;">Las dos manos arriba, los 4 dedos extendidos y el pulgar escondido.</p></div>
+          </div>
+          <div style="display:flex;gap:18px;align-items:flex-start;padding:18px 22px;border-bottom:2px solid #16140f;background:#ffd60a;color:#16140f;">
+            <div style="font-family:'VT323',monospace;font-size:38px;line-height:1;flex:0 0 auto;">04</div>
+            <div><h3 style="margin:0 0 5px;font-family:'Space Mono',monospace;font-weight:700;font-size:15px;text-transform:uppercase;line-height:1.15;">Aguanta 2 segundos 🤘</h3><p style="margin:0;font-family:'Space Mono',monospace;font-size:13px;line-height:1.5;opacity:0.85;">Mantén la cornamenta mientras la barra de progreso se llena.</p></div>
+          </div>
+          <div style="display:flex;gap:18px;align-items:flex-start;padding:18px 22px;background:#25d366;color:#062a14;">
+            <div style="font-family:'VT323',monospace;font-size:38px;line-height:1;flex:0 0 auto;">05</div>
+            <div><h3 style="margin:0 0 5px;font-family:'Space Mono',monospace;font-weight:700;font-size:15px;text-transform:uppercase;line-height:1.15;">Acceso concedido</h3><p style="margin:0;font-family:'Space Mono',monospace;font-size:13px;line-height:1.5;opacity:0.85;">iOS pregunta «¿Abrir en Atajos?» → tocas Abrir y WhatsApp se abre. ~10-15 s en total.</p></div>
+          </div>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:14px;">
+          <div style="flex:1;min-width:200px;background:#16140f;color:#f4ede0;padding:16px 18px;font-family:'Space Mono',monospace;font-size:13px;line-height:1.5;"><strong style="color:#25d366;">🔒 Privacidad real.</strong> Todo el reconocimiento corre en local con MediaPipe. Ningún fotograma sale del dispositivo, nunca.</div>
+          <div style="flex:1;min-width:200px;background:#16140f;color:#f4ede0;padding:16px 18px;font-family:'Space Mono',monospace;font-size:13px;line-height:1.5;"><strong style="color:#ffd60a;">⏰ 10-15 s en total.</strong> Eso es lo que tarda el ritual completo, desde que abres WhatsApp hasta que entras.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INSTALL -->
+<section id="instalar" style="position:relative;padding:80px 24px;background:#2438d8;color:#fff;border-top:3px solid #16140f;">
+  <div style="max-width:1120px;margin:0 auto;">
+    <div style="display:inline-block;background:#ffd60a;color:#16140f;font-family:'Space Mono',monospace;font-weight:700;font-size:12px;letter-spacing:2px;padding:5px 12px;text-transform:uppercase;">Instalación · iOS</div>
+    <h2 style="margin:18px 0 0;font-family:'Anton',sans-serif;font-weight:400;font-size:clamp(34px,5.5vw,64px);line-height:0.95;text-transform:uppercase;">Móntalo en 3 pasos</h2>
+    <p style="margin:16px 0 0;font-family:'Space Mono',monospace;font-size:14px;line-height:1.6;color:#c7cdf5;max-width:560px;">Solo se hace una vez. Necesitas un iPhone con iOS 16+ y la app Atajos (viene de fábrica).</p>
+    <div style="display:flex;flex-wrap:wrap;gap:40px;align-items:flex-start;margin-top:40px;">
+      <div style="flex:1 1 420px;min-width:0;display:flex;flex-direction:column;gap:16px;">
+
+        <!-- paso 1 -->
+        <div style="background:#16140f;border:2px solid #ffd60a;padding:28px 26px;">
+          <div style="display:inline-block;background:#ffd60a;color:#16140f;font-family:'Bungee',cursive;font-size:20px;padding:2px 10px;margin-bottom:14px;line-height:1.3;">1</div>
+          <h3 style="margin:0 0 16px;font-family:'Archivo Black',sans-serif;font-size:15px;letter-spacing:0.5px;text-transform:uppercase;color:#fff;line-height:1.2;">Instala el atajo «Gate OK»</h3>
+          <ul style="list-style:none;margin:0 0 22px;padding:0;display:flex;flex-direction:column;gap:8px;">
+            <li style="font-family:'Space Mono',monospace;font-size:13px;color:#cfc6b6;line-height:1.5;"><span style="color:#ffd60a;margin-right:8px;">♦</span>Abre el enlace desde tu iPhone.</li>
+            <li style="font-family:'Space Mono',monospace;font-size:13px;color:#cfc6b6;line-height:1.5;"><span style="color:#ffd60a;margin-right:8px;">♦</span>Toca «Añadir atajo».</li>
+            <li style="font-family:'Space Mono',monospace;font-size:13px;color:#cfc6b6;line-height:1.5;"><span style="color:#ffd60a;margin-right:8px;">♦</span>Listo — este no necesita ninguna configuración.</li>
+          </ul>
+          <a href="#" style="display:inline-flex;align-items:center;gap:8px;background:#ffd60a;color:#16140f;text-decoration:none;font-family:'Archivo Black',sans-serif;font-size:13px;text-transform:uppercase;padding:12px 20px;box-shadow:4px 4px 0 rgba(0,0,0,0.35);border:2px solid #c9a800;">⬇ Atajo Gate OK</a>
+        </div>
+
+        <!-- paso 2 -->
+        <div style="background:#16140f;border:2px solid #ffd60a;padding:28px 26px;">
+          <div style="display:inline-block;background:#ffd60a;color:#16140f;font-family:'Bungee',cursive;font-size:20px;padding:2px 10px;margin-bottom:14px;line-height:1.3;">2</div>
+          <h3 style="margin:0 0 16px;font-family:'Archivo Black',sans-serif;font-size:15px;letter-spacing:0.5px;text-transform:uppercase;color:#fff;line-height:1.2;">Instala la automatización de WhatsApp</h3>
+          <ul style="list-style:none;margin:0 0 22px;padding:0;display:flex;flex-direction:column;gap:8px;">
+            <li style="font-family:'Space Mono',monospace;font-size:13px;color:#cfc6b6;line-height:1.5;"><span style="color:#ffd60a;margin-right:8px;">♦</span>Abre el enlace desde tu iPhone y toca «Añadir atajo».</li>
+            <li style="font-family:'Space Mono',monospace;font-size:13px;color:#cfc6b6;line-height:1.5;"><span style="color:#ffd60a;margin-right:8px;">♦</span>Abre la app Atajos y ve a la pestaña Automatización (abajo).</li>
+            <li style="font-family:'Space Mono',monospace;font-size:13px;color:#cfc6b6;line-height:1.5;"><span style="color:#ffd60a;margin-right:8px;">♦</span>Busca «Al abrir la app WhatsApp» y tócala.</li>
+            <li style="font-family:'Space Mono',monospace;font-size:13px;color:#cfc6b6;line-height:1.5;"><span style="color:#ffd60a;margin-right:8px;">♦</span>Toca el nombre de la automatización arriba para abrir los ajustes.</li>
+            <li style="font-family:'Space Mono',monospace;font-size:13px;color:#cfc6b6;line-height:1.5;"><span style="color:#ffd60a;margin-right:8px;">♦</span>Cambia «Ejecución» a «Ejecutar inmediatamente».</li>
+            <li style="font-family:'Space Mono',monospace;font-size:13px;color:#cfc6b6;line-height:1.5;"><span style="color:#ffd60a;margin-right:8px;">♦</span>Desactiva «Notificar al ejecutar» (opcional pero recomendado).</li>
+            <li style="font-family:'Space Mono',monospace;font-size:13px;color:#cfc6b6;line-height:1.5;"><span style="color:#ffd60a;margin-right:8px;">♦</span>Toca OK.</li>
+          </ul>
+          <a href="#" style="display:inline-flex;align-items:center;gap:8px;background:#ffd60a;color:#16140f;text-decoration:none;font-family:'Archivo Black',sans-serif;font-size:13px;text-transform:uppercase;padding:12px 20px;box-shadow:4px 4px 0 rgba(0,0,0,0.35);border:2px solid #c9a800;">⬇ Automatización</a>
+        </div>
+
+        <!-- paso 3 -->
+        <div style="background:#16140f;border:2px solid #ffd60a;padding:28px 26px;">
+          <div style="display:inline-block;background:#ffd60a;color:#16140f;font-family:'Bungee',cursive;font-size:20px;padding:2px 10px;margin-bottom:14px;line-height:1.3;">3</div>
+          <h3 style="margin:0 0 16px;font-family:'Archivo Black',sans-serif;font-size:15px;letter-spacing:0.5px;text-transform:uppercase;color:#fff;line-height:1.2;">Primera apertura</h3>
+          <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px;">
+            <li style="font-family:'Space Mono',monospace;font-size:13px;color:#cfc6b6;line-height:1.5;"><span style="color:#ffd60a;margin-right:8px;">♦</span>Abre WhatsApp — Safari se abrirá solo con Cornamenta.</li>
+            <li style="font-family:'Space Mono',monospace;font-size:13px;color:#cfc6b6;line-height:1.5;"><span style="color:#ffd60a;margin-right:8px;">♦</span>Toca Permitir cuando pida acceso a la cámara.</li>
+            <li style="font-family:'Space Mono',monospace;font-size:13px;color:#cfc6b6;line-height:1.5;"><span style="color:#ffd60a;margin-right:8px;">♦</span>Espera ~2 segundos a que cargue el modelo.</li>
+            <li style="font-family:'Space Mono',monospace;font-size:13px;color:#cfc6b6;line-height:1.5;"><span style="color:#ffd60a;margin-right:8px;">♦</span>Haz el gesto para completar la primera ejecución.</li>
+          </ul>
+        </div>
+
+        <p style="margin:4px 0 0;font-family:'Space Mono',monospace;font-size:12px;color:#c7cdf5;">Compatible con iOS 16+. Android en lista de espera.</p>
+      </div>
+      <!-- tutorial phone -->
+      <div style="flex:0 0 286px;max-width:286px;margin:0 auto;">
+        <div style="position:relative;width:100%;aspect-ratio:1290/2796;background:#16140f;border-radius:38px;box-shadow:0 0 0 3px #16140f,9px 10px 0 #ffd60a;padding:9px;">
+          <div style="position:relative;width:100%;height:100%;border-radius:24px;overflow:hidden;background:#0a0a0a;">
+            <img src="assets/cuernos-hand.png" alt="" style="position:absolute;top:46%;left:50%;transform:translate(-50%,-50%);width:48%;height:auto;opacity:0.15;">
+            <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;text-align:center;padding:20px;">
+              <div style="width:66px;height:66px;border-radius:50%;background:#ffd60a;color:#16140f;display:flex;align-items:center;justify-content:center;box-shadow:4px 4px 0 #16140f;"><span style="font-size:26px;margin-left:5px;">▶</span></div>
+              <div style="font-family:'VT323',monospace;color:#fff;font-size:19px;letter-spacing:1px;">CÓMO INSTALAR</div>
+              <div style="font-family:'Space Mono',monospace;color:#8a8276;font-size:10px;letter-spacing:1px;border:1px dashed #5a5347;padding:5px 9px;">1290 × 2796 · PLACEHOLDER</div>
+            </div>
+            <div style="position:absolute;top:11px;left:11px;background:#ffd60a;color:#16140f;font-family:'Archivo Black',sans-serif;font-size:10px;padding:4px 8px;transform:rotate(-4deg);">▶ TUTORIAL</div>
+          </div>
+        </div>
+        <p style="margin:14px 4px 0;text-align:center;font-family:'Space Mono',monospace;font-size:11px;line-height:1.5;color:#c7cdf5;">Paso a paso del atajo, en menos de un minuto.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section style="position:relative;padding:80px 24px;background:#16140f;">
+  <div style="max-width:820px;margin:0 auto;">
+    <h2 style="margin:0 0 36px;font-family:'Anton',sans-serif;font-weight:400;font-size:clamp(32px,5vw,56px);line-height:0.95;text-transform:uppercase;color:#f4ede0;">Preguntas<br>incómodas</h2>
+
+    <div class="faq-item" style="cursor:pointer;border-bottom:2px solid #3a352b;padding:20px 4px;" onclick="toggleFaq(0)">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;">
+        <h3 style="margin:0;font-family:'Space Mono',monospace;font-weight:700;font-size:16px;color:#f4ede0;line-height:1.3;">¿Sale mi vídeo del móvil?</h3>
+        <span class="faq-sign" style="font-family:'Bungee',cursive;font-size:20px;color:#ff2d95;line-height:1;flex-shrink:0;">+</span>
+      </div>
+      <p class="faq-answer" style="display:none;margin:14px 0 0;max-width:680px;font-family:'Space Mono',monospace;color:#cfc6b6;font-size:14px;line-height:1.65;">No. Todo el reconocimiento de manos corre en local con MediaPipe, dentro de tu navegador. Ningún fotograma se graba ni se sube a ningún servidor.</p>
+    </div>
+    <div class="faq-item" style="cursor:pointer;border-bottom:2px solid #3a352b;padding:20px 4px;" onclick="toggleFaq(1)">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;">
+        <h3 style="margin:0;font-family:'Space Mono',monospace;font-weight:700;font-size:16px;color:#f4ede0;line-height:1.3;">¿Y si de verdad necesito entrar?</h3>
+        <span class="faq-sign" style="font-family:'Bungee',cursive;font-size:20px;color:#ffd60a;line-height:1;flex-shrink:0;">+</span>
+      </div>
+      <p class="faq-answer" style="display:none;margin:14px 0 0;max-width:680px;font-family:'Space Mono',monospace;color:#cfc6b6;font-size:14px;line-height:1.65;">Haz el gesto. Siempre puedes entrar — esa es la gracia. No te bloquea, solo te obliga a mirarte mientras te pones los cuernos. La decisión sigue siendo tuya.</p>
+    </div>
+    <div class="faq-item" style="cursor:pointer;border-bottom:2px solid #3a352b;padding:20px 4px;" onclick="toggleFaq(2)">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;">
+        <h3 style="margin:0;font-family:'Space Mono',monospace;font-weight:700;font-size:16px;color:#f4ede0;line-height:1.3;">¿Qué gesto exactamente?</h3>
+        <span class="faq-sign" style="font-family:'Bungee',cursive;font-size:20px;color:#25d366;line-height:1;flex-shrink:0;">+</span>
+      </div>
+      <p class="faq-answer" style="display:none;margin:14px 0 0;max-width:680px;font-family:'Space Mono',monospace;color:#cfc6b6;font-size:14px;line-height:1.65;">Las dos manos por encima de la cabeza, los cuatro dedos (índice a meñique) extendidos y el pulgar doblado hacia la palma. Juntas forman la cornamenta. Aguanta el tiempo que marca el contador.</p>
+    </div>
+    <div class="faq-item" style="cursor:pointer;border-bottom:2px solid #3a352b;padding:20px 4px;" onclick="toggleFaq(3)">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;">
+        <h3 style="margin:0;font-family:'Space Mono',monospace;font-weight:700;font-size:16px;color:#f4ede0;line-height:1.3;">¿Esto me va a curar?</h3>
+        <span class="faq-sign" style="font-family:'Bungee',cursive;font-size:20px;color:#2438d8;line-height:1;flex-shrink:0;">+</span>
+      </div>
+      <p class="faq-answer" style="display:none;margin:14px 0 0;max-width:680px;font-family:'Space Mono',monospace;color:#cfc6b6;font-size:14px;line-height:1.65;">No. Pero te va a hacer dudar. Y resulta que dudar dos segundos, de pie, con las manos en la cabeza, suele bastar para que el impulso pierda fuerza.</p>
+    </div>
+    <div class="faq-item" style="cursor:pointer;border-bottom:2px solid #3a352b;padding:20px 4px;" onclick="toggleFaq(4)">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;">
+        <h3 style="margin:0;font-family:'Space Mono',monospace;font-weight:700;font-size:16px;color:#f4ede0;line-height:1.3;">¿Funciona en Android?</h3>
+        <span class="faq-sign" style="font-family:'Bungee',cursive;font-size:20px;color:#e63327;line-height:1;flex-shrink:0;">+</span>
+      </div>
+      <p class="faq-answer" style="display:none;margin:14px 0 0;max-width:680px;font-family:'Space Mono',monospace;color:#cfc6b6;font-size:14px;line-height:1.65;">Por ahora el atajo es solo de iOS, porque depende de Atajos de Apple para detectar la apertura de WhatsApp. La versión Android está en lista de espera.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer style="position:relative;background:#ff2d95;color:#16140f;border-top:3px solid #16140f;padding:54px 24px 40px;overflow:hidden;">
+  <div style="max-width:1120px;margin:0 auto;">
+    <div style="font-family:'Anton',sans-serif;font-size:clamp(40px,9vw,110px);line-height:0.9;text-transform:uppercase;">No le<br>escribas.</div>
+    <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:20px;margin-top:30px;border-top:2px solid #16140f;padding-top:18px;">
+      <div style="font-family:'Space Mono',monospace;font-size:12px;line-height:1.6;">CORNAMENTA © 2026<br>Hecho para que te lo pienses dos veces.</div>
+      <div style="display:flex;gap:18px;font-family:'Space Mono',monospace;font-weight:700;font-size:12px;text-transform:uppercase;">
+        <a href="#story"    style="color:#16140f;text-decoration:none;border-bottom:2px solid #16140f;">El truco</a>
+        <a href="#demo"     style="color:#16140f;text-decoration:none;border-bottom:2px solid #16140f;">Pruébalo</a>
+        <a href="#instalar" style="color:#16140f;text-decoration:none;border-bottom:2px solid #16140f;">Instalar</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script type="module">
+import { FilesetResolver, HandLandmarker } from 'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.8/vision_bundle.mjs';
+
+const HOLD_MS = 2000;
+const videoEl  = document.getElementById('cam-video');
+const canvasEl = document.getElementById('cam-canvas');
+const ctx      = canvasEl.getContext('2d');
+const statusEl = document.getElementById('cam-status');
+const barEl    = document.getElementById('cam-bar');
+
+let camStatus = 'idle';
+let granted = false;
+let stream = null;
+let handLandmarker = null;
+let animFrame = null;
+let holdStart = null;
+let lastVideoTime = -1;
+
+const OVERLAYS = ['idle', 'starting', 'blocked', 'granted'];
+function showOverlay(name) {
+  OVERLAYS.forEach(n => {
+    document.getElementById('overlay-' + n).style.display = (n === name) ? 'flex' : 'none';
+  });
+}
+
+window.startCam = async function () {
+  if (camStatus === 'starting' || camStatus === 'live') return;
+  camStatus = 'starting';
+  granted = false;
+  showOverlay('starting');
+
+  try {
+    if (!navigator.mediaDevices?.getUserMedia) {
+      document.getElementById('cam-blocked-msg').textContent = 'ESTE NAVEGADOR NO SOPORTA CÁMARA.';
+      camStatus = 'unsupported';
+      showOverlay('blocked');
+      return;
+    }
+
+    stream = await navigator.mediaDevices.getUserMedia({
+      video: { facingMode: 'user', width: { ideal: 640 }, height: { ideal: 480 } },
+      audio: false
+    });
+    videoEl.muted = true;
+    videoEl.srcObject = stream;
+    await videoEl.play().catch(() => {});
+    camStatus = 'live';
+    showOverlay(null); // overlays off — video + canvas visible
+    statusEl.textContent = 'BUSCANDO TUS MANOS…';
+
+    const vision = await FilesetResolver.forVisionTasks(
+      'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.8/wasm'
+    );
+    handLandmarker = await HandLandmarker.createFromOptions(vision, {
+      baseOptions: {
+        modelAssetPath: 'https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task',
+        delegate: 'GPU'
+      },
+      runningMode: 'VIDEO',
+      numHands: 2,
+      minHandDetectionConfidence: 0.6,
+      minHandPresenceConfidence: 0.5,
+      minTrackingConfidence: 0.5
+    });
+    runLoop();
+
+  } catch (err) {
+    const denied = ['NotAllowedError', 'SecurityError', 'PermissionDeniedError'].includes(err.name);
+    document.getElementById('cam-blocked-msg').textContent = denied
+      ? 'PERMISO DENEGADO. ÁBRELO EN SAFARI Y ACEPTA LA CÁMARA.'
+      : 'NO SE PUDO INICIAR LA CÁMARA.';
+    camStatus = denied ? 'denied' : 'error';
+    showOverlay('blocked');
+  }
+};
+
+const CONNECTIONS = [
+  [0,1],[1,2],[2,3],[3,4],
+  [0,5],[5,6],[6,7],[7,8],
+  [5,9],[9,10],[10,11],[11,12],
+  [9,13],[13,14],[14,15],[15,16],
+  [13,17],[17,18],[18,19],[19,20],
+  [0,17]
+];
+
+function isCornamenta(lm) {
+  const ext = (tip, pip) => lm[tip].y < lm[pip].y - 0.02;
+  const tip = lm[4], base = lm[2], palm = lm[9];
+  const thumbDown = Math.hypot(tip.x - palm.x, tip.y - palm.y) <
+                    Math.hypot(base.x - palm.x, base.y - palm.y) + 0.05;
+  return ext(8,6) && ext(12,10) && ext(16,14) && ext(20,18) && thumbDown;
+}
+
+function drawHand(lm, color) {
+  const W = canvasEl.width, H = canvasEl.height;
+  ctx.save();
+  ctx.strokeStyle = color;
+  ctx.lineWidth = 2;
+  ctx.globalAlpha = 0.85;
+  for (const [a, b] of CONNECTIONS) {
+    ctx.beginPath();
+    ctx.moveTo(lm[a].x * W, lm[a].y * H);
+    ctx.lineTo(lm[b].x * W, lm[b].y * H);
+    ctx.stroke();
+  }
+  ctx.globalAlpha = 1;
+  for (const p of lm) {
+    ctx.beginPath();
+    ctx.arc(p.x * W, p.y * H, 4, 0, Math.PI * 2);
+    ctx.fillStyle = color;
+    ctx.fill();
+  }
+  ctx.restore();
+}
+
+function runLoop() {
+  if (!stream || !handLandmarker) return;
+
+  canvasEl.width  = videoEl.videoWidth  || canvasEl.width;
+  canvasEl.height = videoEl.videoHeight || canvasEl.height;
+  ctx.clearRect(0, 0, canvasEl.width, canvasEl.height);
+
+  if (videoEl.readyState >= 2 && videoEl.currentTime !== lastVideoTime) {
+    lastVideoTime = videoEl.currentTime;
+    const results = handLandmarker.detectForVideo(videoEl, performance.now());
+    const hands = results?.landmarks || [];
+    let good = 0;
+
+    for (const lm of hands) {
+      const ok = isCornamenta(lm);
+      drawHand(lm, ok ? '#25d366' : '#ffd60a');
+      if (ok) good++;
+    }
+
+    const now = performance.now();
+    if (good >= 2) {
+      if (!holdStart) holdStart = now;
+      const pct = Math.min(1, (now - holdStart) / HOLD_MS);
+      barEl.style.width = Math.round(pct * 100) + '%';
+      statusEl.textContent = 'AGUANTA… ' + Math.round(pct * 100) + '%';
+      if (pct >= 1) { grantAccess(); return; }
+    } else {
+      holdStart = null;
+      barEl.style.width = '0%';
+      statusEl.textContent = hands.length >= 1
+        ? 'CASI — LAS DOS MANOS, 4 DEDOS ARRIBA'
+        : 'BUSCANDO TUS MANOS…';
+    }
+  }
+
+  animFrame = requestAnimationFrame(runLoop);
+}
+
+function stopCam() {
+  if (animFrame) { cancelAnimationFrame(animFrame); animFrame = null; }
+  if (handLandmarker) { try { handLandmarker.close(); } catch (e) {} handLandmarker = null; }
+  if (stream) { stream.getTracks().forEach(t => t.stop()); stream = null; }
+}
+
+function grantAccess() {
+  holdStart = null;
+  granted = true;
+  barEl.style.width = '100%';
+  stopCam();
+  showOverlay('granted');
+}
+
+window.simulate  = function () { grantAccess(); };
+window.resetCam  = function () {
+  granted = false;
+  holdStart = null;
+  camStatus = 'idle';
+  barEl.style.width = '0%';
+  statusEl.textContent = 'PULSA «ENCENDER CÁMARA» PARA EMPEZAR';
+  showOverlay('idle');
+};
+
+// FAQ accordion
+window.toggleFaq = function (i) {
+  document.querySelectorAll('.faq-item').forEach((el, idx) => {
+    if (idx !== i) return;
+    const answer = el.querySelector('.faq-answer');
+    const sign   = el.querySelector('.faq-sign');
+    const open   = answer.style.display === 'block';
+    answer.style.display = open ? 'none' : 'block';
+    sign.textContent     = open ? '+'    : '–';
+  });
+};
+
+// Sticker drag
+let drag = null;
+const heroEl  = document.getElementById('top');
+const sticker = document.getElementById('sticker1');
+
+sticker.addEventListener('pointerdown', e => {
+  const r = sticker.getBoundingClientRect();
+  drag = { dx: e.clientX - r.left, dy: e.clientY - r.top };
+  document.body.style.userSelect = 'none';
+  e.preventDefault();
+});
+document.addEventListener('pointermove', e => {
+  if (!drag) return;
+  const r = heroEl.getBoundingClientRect();
+  sticker.style.left = (e.clientX - r.left - drag.dx) + 'px';
+  sticker.style.top  = (e.clientY - r.top  - drag.dy) + 'px';
+});
+document.addEventListener('pointerup', () => { drag = null; document.body.style.userSelect = ''; });
+</script>
+</body>
+</html>
