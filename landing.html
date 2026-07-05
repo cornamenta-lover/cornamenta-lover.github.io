@@ -16,6 +16,8 @@
     @keyframes wg-blink   { 0%,49% { opacity:1; } 50%,100% { opacity:0; } }
     @keyframes wg-float   { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-12px); } }
     ::selection { background: #ff2d95; color: #fff; }
+    .yt-democard iframe { pointer-events: none; }
+    .yt-democard:hover iframe, .yt-democard.yt-active iframe { pointer-events: auto; }
   </style>
 </head>
 <body>
@@ -178,19 +180,16 @@
   <div style="max-width:1120px;margin:0 auto;">
     <h2 style="margin:0;font-family:'Anton',sans-serif;font-weight:400;font-size:clamp(34px,6vw,72px);line-height:0.95;text-transform:uppercase;">Cómo<br>funciona</h2>
     <div style="display:flex;flex-wrap:wrap;gap:40px;align-items:stretch;margin-top:44px;">
-      <!-- phone mockup -->
-      <div style="flex:0 0 286px;max-width:286px;margin:0 auto;">
-        <div style="position:relative;width:100%;aspect-ratio:1290/2796;background:#16140f;border-radius:38px;box-shadow:0 0 0 3px #16140f,9px 10px 0 #ff2d95;padding:9px;">
-          <div style="position:relative;width:100%;height:100%;border-radius:24px;overflow:hidden;background:#0a0a0a;">
-            <iframe
-              src="https://www.youtube-nocookie.com/embed/4B_DJ6yLzjg?autoplay=1&mute=1&loop=1&playlist=4B_DJ6yLzjg&controls=1&playsinline=1&rel=0&modestbranding=1"
-              title="Demo Cornamenta"
-              style="position:absolute;inset:0;width:100%;height:100%;border:0;"
-              allow="autoplay; encrypted-media; picture-in-picture"
-              allowfullscreen
-              loading="lazy"></iframe>
-            <div style="position:absolute;top:11px;left:11px;background:#ff2d95;color:#16140f;font-family:'Archivo Black',sans-serif;font-size:10px;padding:4px 8px;transform:rotate(-4deg);pointer-events:none;">▶ DEMO</div>
-          </div>
+      <!-- demo video -->
+      <div style="flex:0 0 360px;max-width:360px;margin:0 auto;">
+        <div class="yt-democard" onclick="this.classList.add('yt-active')" style="position:relative;width:100%;aspect-ratio:9/16;border-radius:16px;overflow:hidden;box-shadow:9px 10px 0 #ff2d95,0 0 0 3px #16140f;">
+          <iframe
+            src="https://www.youtube-nocookie.com/embed/4B_DJ6yLzjg?autoplay=1&mute=1&loop=1&playlist=4B_DJ6yLzjg&controls=1&playsinline=1&rel=0&modestbranding=1"
+            title="Demo Cornamenta"
+            style="position:absolute;inset:0;width:100%;height:100%;border:0;"
+            allow="autoplay; encrypted-media; picture-in-picture"
+            allowfullscreen
+            loading="lazy"></iframe>
         </div>
       </div>
       <!-- steps -->
@@ -277,17 +276,17 @@
 
         <p style="margin:4px 0 0;font-family:'Space Mono',monospace;font-size:12px;color:#c7cdf5;">Compatible con iOS 16+. Android en lista de espera.</p>
       </div>
-      <!-- tutorial phone -->
-      <div style="flex:0 0 286px;max-width:286px;margin:0 auto;">
-        <div style="position:relative;width:100%;aspect-ratio:1290/2796;background:#16140f;border-radius:38px;box-shadow:0 0 0 3px #16140f,9px 10px 0 #ffd60a;padding:9px;">
-          <div style="position:relative;width:100%;height:100%;border-radius:24px;overflow:hidden;background:#0a0a0a;">
-            <img src="assets/cuernos-hand.png" alt="" style="position:absolute;top:46%;left:50%;transform:translate(-50%,-50%);width:48%;height:auto;opacity:0.15;">
-            <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;text-align:center;padding:20px;">
-              <div style="width:66px;height:66px;border-radius:50%;background:#ffd60a;color:#16140f;display:flex;align-items:center;justify-content:center;box-shadow:4px 4px 0 #16140f;"><span style="font-size:26px;margin-left:5px;">▶</span></div>
-              <div style="font-family:'VT323',monospace;color:#fff;font-size:19px;letter-spacing:1px;">CÓMO INSTALAR</div>
-              <div style="font-family:'Space Mono',monospace;color:#8a8276;font-size:10px;letter-spacing:1px;border:1px dashed #5a5347;padding:5px 9px;">1290 × 2796 · PLACEHOLDER</div>
-            </div>
-            <div style="position:absolute;top:11px;left:11px;background:#ffd60a;color:#16140f;font-family:'Archivo Black',sans-serif;font-size:10px;padding:4px 8px;transform:rotate(-4deg);">▶ TUTORIAL</div>
+      <!-- tutorial video —
+           cuando tengas la URL de YouTube, sustituye el contenido de
+           .yt-democard por el mismo <iframe> que el vídeo de "Cómo funciona"
+           (misma clase yt-democard = controles solo al pasar el cursor). -->
+      <div style="flex:0 0 360px;max-width:360px;margin:0 auto;">
+        <div class="yt-democard" style="position:relative;width:100%;aspect-ratio:9/16;border-radius:16px;overflow:hidden;background:#0a0a0a;box-shadow:9px 10px 0 #ffd60a,0 0 0 3px #16140f;">
+          <img src="assets/cuernos-hand.png" alt="" style="position:absolute;top:46%;left:50%;transform:translate(-50%,-50%);width:48%;height:auto;opacity:0.15;">
+          <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;text-align:center;padding:20px;">
+            <div style="width:66px;height:66px;border-radius:50%;background:#ffd60a;color:#16140f;display:flex;align-items:center;justify-content:center;box-shadow:4px 4px 0 #16140f;"><span style="font-size:26px;margin-left:5px;">▶</span></div>
+            <div style="font-family:'VT323',monospace;color:#fff;font-size:19px;letter-spacing:1px;">CÓMO INSTALAR</div>
+            <div style="font-family:'Space Mono',monospace;color:#8a8276;font-size:10px;letter-spacing:1px;border:1px dashed #5a5347;padding:5px 9px;">PRÓXIMAMENTE</div>
           </div>
         </div>
         <p style="margin:14px 4px 0;text-align:center;font-family:'Space Mono',monospace;font-size:11px;line-height:1.5;color:#c7cdf5;">Paso a paso del atajo, en menos de un minuto.</p>
