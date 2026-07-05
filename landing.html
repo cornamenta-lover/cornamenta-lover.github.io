@@ -16,11 +16,6 @@
     @keyframes wg-blink   { 0%,49% { opacity:1; } 50%,100% { opacity:0; } }
     @keyframes wg-float   { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-12px); } }
     ::selection { background: #ff2d95; color: #fff; }
-    .yt-democard iframe { position:absolute; inset:0; width:100%; height:100%; border:0; }
-    .yt-controls { position:absolute; left:0; right:0; bottom:0; z-index:2; display:flex; align-items:center; justify-content:center; gap:14px; padding:16px 12px; background:linear-gradient(to top, rgba(0,0,0,0.6), transparent); opacity:0; pointer-events:none; transition:opacity 0.18s ease; }
-    .yt-democard:hover .yt-controls, .yt-democard.yt-active .yt-controls { opacity:1; pointer-events:auto; }
-    .yt-btn { cursor:pointer; width:38px; height:38px; border-radius:50%; border:2px solid #fff; background:rgba(0,0,0,0.45); color:#fff; font-size:15px; line-height:1; display:flex; align-items:center; justify-content:center; font-family:'Space Mono',monospace; }
-    .yt-btn:active { background:rgba(255,255,255,0.25); }
   </style>
 </head>
 <body>
@@ -185,13 +180,10 @@
     <div style="display:flex;flex-wrap:wrap;gap:40px;align-items:stretch;margin-top:44px;">
       <!-- demo video -->
       <div style="flex:0 0 360px;max-width:360px;margin:0 auto;">
-        <div class="yt-democard" onclick="this.classList.add('yt-active')" style="position:relative;width:100%;aspect-ratio:9/16;border-radius:16px;overflow:hidden;box-shadow:9px 10px 0 #ff2d95,0 0 0 3px #16140f;background:#0a0a0a;">
-          <div class="yt-target" data-yt-id="4B_DJ6yLzjg"></div>
-          <div class="yt-controls" onclick="event.stopPropagation()">
-            <button type="button" class="yt-btn" data-yt-action="back">«5</button>
-            <button type="button" class="yt-btn yt-play-btn" data-yt-action="play">❚❚</button>
-            <button type="button" class="yt-btn" data-yt-action="fwd">5»</button>
-          </div>
+        <div style="position:relative;width:100%;aspect-ratio:9/16;border-radius:16px;overflow:hidden;box-shadow:9px 10px 0 #ff2d95,0 0 0 3px #16140f;background:#0a0a0a;">
+          <video autoplay muted loop playsinline controls style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
+            <source src="https://github.com/cornamenta-lover/cornamenta-lover.github.io/releases/download/media-v1/Demo.Cornamenta.mp4" type="video/mp4">
+          </video>
         </div>
       </div>
       <!-- steps -->
@@ -280,13 +272,10 @@
       </div>
       <!-- tutorial video -->
       <div style="flex:0 0 360px;max-width:360px;margin:0 auto;">
-        <div class="yt-democard" onclick="this.classList.add('yt-active')" style="position:relative;width:100%;aspect-ratio:9/16;border-radius:16px;overflow:hidden;box-shadow:9px 10px 0 #ffd60a,0 0 0 3px #16140f;background:#0a0a0a;">
-          <div class="yt-target" data-yt-id="lkYemzFW-aU"></div>
-          <div class="yt-controls" onclick="event.stopPropagation()">
-            <button type="button" class="yt-btn" data-yt-action="back">«5</button>
-            <button type="button" class="yt-btn yt-play-btn" data-yt-action="play">❚❚</button>
-            <button type="button" class="yt-btn" data-yt-action="fwd">5»</button>
-          </div>
+        <div style="position:relative;width:100%;aspect-ratio:9/16;border-radius:16px;overflow:hidden;box-shadow:9px 10px 0 #ffd60a,0 0 0 3px #16140f;background:#0a0a0a;">
+          <video autoplay muted loop playsinline controls style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
+            <source src="https://github.com/cornamenta-lover/cornamenta-lover.github.io/releases/download/media-v1/Tutorial.Instalacion.mp4" type="video/mp4">
+          </video>
         </div>
         <p style="margin:14px 4px 0;text-align:center;font-family:'Space Mono',monospace;font-size:11px;line-height:1.5;color:#c7cdf5;">Paso a paso del atajo, en menos de un minuto.</p>
       </div>
@@ -559,43 +548,6 @@ document.addEventListener('pointermove', e => {
   sticker.style.top  = (e.clientY - r.top  - drag.dy) + 'px';
 });
 document.addEventListener('pointerup', () => { drag = null; document.body.style.userSelect = ''; });
-
-// YouTube demo/tutorial players — no native chrome, own play/back/fwd controls shown on hover
-const SEEK_STEP = 5;
-window.onYouTubeIframeAPIReady = function () {
-  document.querySelectorAll('.yt-target[data-yt-id]').forEach(target => {
-    const card = target.closest('.yt-democard');
-    const id = target.dataset.ytId;
-    const player = new YT.Player(target, {
-      videoId: id,
-      playerVars: {
-        autoplay: 1, mute: 1, loop: 1, playlist: id,
-        controls: 0, playsinline: 1, rel: 0, modestbranding: 1, disablekb: 1
-      },
-      events: {
-        onReady: e => { e.target.mute(); e.target.playVideo(); },
-        onStateChange: e => {
-          const btn = card.querySelector('.yt-play-btn');
-          if (btn) btn.textContent = (e.data === YT.PlayerState.PLAYING) ? '❚❚' : '▶';
-        }
-      }
-    });
-    card.querySelector('[data-yt-action="play"]').addEventListener('click', () => {
-      player.getPlayerState() === YT.PlayerState.PLAYING ? player.pauseVideo() : player.playVideo();
-    });
-    card.querySelector('[data-yt-action="back"]').addEventListener('click', () => {
-      player.seekTo(Math.max(0, player.getCurrentTime() - SEEK_STEP), true);
-    });
-    card.querySelector('[data-yt-action="fwd"]').addEventListener('click', () => {
-      player.seekTo(player.getCurrentTime() + SEEK_STEP, true);
-    });
-  });
-};
-(function () {
-  const s = document.createElement('script');
-  s.src = 'https://www.youtube.com/iframe_api';
-  document.head.appendChild(s);
-})();
 </script>
 </body>
 </html>
